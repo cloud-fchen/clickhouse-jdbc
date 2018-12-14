@@ -779,6 +779,9 @@ public class ClickHouseStatementImpl implements ClickHouseStatement {
         HttpEntity entity = null;
         try {
             URI uri = buildRequestUri(null, null, additionalDBParams, null, false);
+            System.out.println("----- sql -----");
+            System.out.println(sql + " FORMAT " + format.name());
+            System.out.println(content);
             HttpEntity requestEntity = new BodyEntityWrapper(sql + " FORMAT " + format.name(), content);
 
             HttpPost httpPost = new HttpPost(uri);

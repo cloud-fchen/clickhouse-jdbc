@@ -95,6 +95,7 @@ public class ClickHousePreparedStatementImpl extends ClickHouseStatementImpl imp
             sb.append(sqlParts.get(i));
         }
         String mySql = sb.toString();
+        System.out.println(mySql);
         return mySql;
     }
 
@@ -225,7 +226,7 @@ public class ClickHousePreparedStatementImpl extends ClickHouseStatementImpl imp
 
     @Override
     public void setTimestamp(int parameterIndex, Timestamp x) throws SQLException {
-        setBind(parameterIndex, dateTimeFormat.format(x), true);
+        setBind(parameterIndex, dateTimeFormat.format(x), false);
     }
 
     @Override
@@ -320,6 +321,16 @@ public class ClickHousePreparedStatementImpl extends ClickHouseStatementImpl imp
 
     private List<byte[]> buildBatch() throws SQLException {
         checkBinded();
+//        for(List<String> l : parameterList) {
+//            for (String s: l) {
+//                System.out.println("xxxxxxxxx");
+//                System.out.println(s);
+//            }
+//        }
+//        for(String s: binds) {
+//            System.out.println("yyyyyyyy");
+//            System.out.println(s);
+//        }
         List<byte[]> newBatches = new ArrayList<byte[]>(parameterList.size());
         StringBuilder sb = new StringBuilder();
         for (int i = 0, p = 0; i < parameterList.size(); i++) {
@@ -337,6 +348,7 @@ public class ClickHousePreparedStatementImpl extends ClickHouseStatementImpl imp
                 }
                 sb.append(j < pList.size() - 1 ? "\t" : "\n");
             }
+            System.out.println(sb.toString());
             newBatches.add(sb.toString().getBytes(StreamUtils.UTF_8));
             sb = new StringBuilder();
         }

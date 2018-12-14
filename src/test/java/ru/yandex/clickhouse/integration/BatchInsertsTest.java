@@ -40,7 +40,7 @@ public class BatchInsertsTest {
 
     @AfterTest
     public void tearDown() throws Exception {
-        connection.createStatement().execute("DROP DATABASE test");
+//        connection.createStatement().execute("DROP DATABASE test");
     }
 
     @Test
@@ -82,7 +82,7 @@ public class BatchInsertsTest {
                         "string String," +
                         "int32 Int32," +
                         "float64 Float64" +
-                        ") ENGINE = MergeTree(date, (date), 8192)"
+                        ") ENGINE = Memory"
         );
 
         Date date = new Date(dateFormat.parse("1989-01-30").getTime());
@@ -96,7 +96,7 @@ public class BatchInsertsTest {
         );
 
         statement.setDate(1, date);
-        statement.setTimestamp(2, dateTime);
+        statement.setTimestamp(2, null);
         statement.setString(3, string);
         statement.setInt(4, int32);
         statement.setDouble(5, float64);
