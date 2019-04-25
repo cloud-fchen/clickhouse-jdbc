@@ -98,10 +98,11 @@ public class ClickHouseStatementImpl implements ClickHouseStatement {
     }
 
     @Override
-    public ResultSet executeQuery(String sql,
+    public ResultSet executeQuery(String nsql,
                                   Map<ClickHouseQueryParam, String> additionalDBParams,
                                   List<ClickHouseExternalData> externalData,
                                   Map<String, String> additionalRequestParams) throws SQLException {
+        String sql = replaceSql(nsql);
 
         // forcibly disable extremes for ResultSet queries
         if (additionalDBParams == null || additionalDBParams.isEmpty()) {
@@ -136,6 +137,18 @@ public class ClickHouseStatementImpl implements ClickHouseStatement {
             StreamUtils.close(is);
             throw ClickHouseExceptionSpecifier.specify(e, properties.getHost(), properties.getPort());
         }
+    }
+
+    private String replaceSql(String sql) {
+        String result = sql;
+        if (sql.toLowerCase().startsWith("create")) {
+            result = sql.replaceAll("\"", "").replace("NOT NULL", "")
+                // 替换real为float32类型
+                .replaceAll("REAL", "Float32")
+                // 替换double PRECISION为dobuld类型
+                .replaceAll("PRECISION", "");
+        }
+        return result;
     }
 
     @Override
@@ -206,7 +219,9 @@ public class ClickHouseStatementImpl implements ClickHouseStatement {
     }
 
     @Override
-    public int executeUpdate(String sql) throws SQLException {
+    public int executeUpdate(String nsql) throws SQLException {
+        String sql = replaceSql(nsql);
+        System.out.println("update sql: " + sql);
         InputStream is = null;
         try {
             is = getInputStream(sql, null, null, null);

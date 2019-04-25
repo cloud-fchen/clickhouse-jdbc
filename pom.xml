@@ -225,24 +225,41 @@
                                     <include>commons-codec:*</include>
                                 </includes>
                             </artifactSet>
+                            <!--<relocations>-->
+                                <!--<relocation>-->
+                                    <!--<pattern>com</pattern>-->
+                                    <!--<shadedPattern>ru.yandex.repackaged.com</shadedPattern>-->
+                                    <!--<includes>-->
+                                        <!--<include>com.google.**</include>-->
+                                        <!--<include>com.fasterxml.**</include>-->
+                                    <!--</includes>-->
+                                <!--</relocation>-->
+                                <!--<relocation>-->
+                                    <!--<pattern>org</pattern>-->
+                                    <!--<shadedPattern>ru.yandex.repackaged.org</shadedPattern>-->
+                                    <!--<includes>-->
+                                        <!--<include>org.apache.**</include>-->
+                                    <!--</includes>-->
+                                <!--</relocation>-->
+                            <!--</relocations>-->
+                            <!--<shadedArtifactAttached>true</shadedArtifactAttached>-->
                             <relocations>
                                 <relocation>
-                                    <pattern>com</pattern>
-                                    <shadedPattern>ru.yandex.repackaged.com</shadedPattern>
-                                    <includes>
-                                        <include>com.google.**</include>
-                                        <include>com.fasterxml.**</include>
-                                    </includes>
+                                    <pattern>com.google.guava</pattern>
+                                    <shadedPattern>clickhouse.shade.guava</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>org</pattern>
-                                    <shadedPattern>ru.yandex.repackaged.org</shadedPattern>
-                                    <includes>
-                                        <include>org.apache.**</include>
-                                    </includes>
+                                    <pattern>com.google.common</pattern>
+                                    <shadedPattern>clickhouse.shade.common</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.http</pattern>
+                                    <shadedPattern>clickhouse.shade.apache.http</shadedPattern>
                                 </relocation>
                             </relocations>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer" />
+                            </transformers>
                         </configuration>
                     </execution>
                 </executions>

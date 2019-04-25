@@ -99,6 +99,7 @@ public class ClickHousePreparedStatementImpl extends ClickHouseStatementImpl imp
         return mySql;
     }
 
+
     private void appendBoundValue(StringBuilder sb, int num) {
         if (valuesQuote[num]) {
             sb.append("'").append(binds[num]).append("'");
